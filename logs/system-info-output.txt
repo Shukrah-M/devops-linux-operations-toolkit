@@ -1,0 +1,39 @@
+Sat Oct  3 12:33:22 BST 2026
+Shukurah
+Shukurah
+6.18.40.1-microsoft-standard-WSL2
+up 5 hours, 28 minutes
+               total        used        free      shared  buff/cache   available
+Mem:           7.6Gi       494Mi       7.1Gi       4.0Mi       207Mi       7.1Gi
+Swap:          2.0Gi          0B       2.0Gi
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sdd       1007G  3.9G  952G   1% /
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         271  0.0  0.4 123484 32640 ?        Ssl  07:05   0:00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+root         195  0.0  0.3  44112 29744 ?        Ss   07:05   0:00 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+root          71  0.0  0.2  50440 17012 ?        S<s  07:04   0:00 /usr/lib/systemd/systemd-journald
+root           1  0.0  0.1  24280 15440 ?        Ss   07:04   0:01 /sbin/init
+systemd+     113  0.0  0.1  22428 14424 ?        Ss   07:04   0:00 /usr/lib/systemd/systemd-resolved
+Shukurah     527  0.0  0.1  22344 13524 ?        Ss   07:05   0:00 /usr/lib/systemd/systemd --user
+root         121  0.0  0.1  34756 12080 ?        Ss   07:04   0:01 /usr/lib/systemd/systemd-udevd
+_chrony      270  0.0  0.1  23868 11272 ?        S    07:05   0:00 /usr/sbin/chronyd -n -F 1 -x
+root         205  0.0  0.1  18444  9388 ?        Ss   07:05   0:00 /usr/lib/systemd/systemd-logind
+polkitd     2539  0.0  0.1 306448  8372 ?        Ssl  11:30   0:00 /usr/lib/polkit-1/polkitd --no-debug --log-level=notice
+Shukurah    3361  0.0  0.0  16112  7500 pts/0    S+   12:33   0:00 tee logs/system-info-output.txt
+syslog       230  0.0  0.0 220548  5800 ?        Ssl  07:05   0:00 /usr/sbin/rsyslogd -n -iNONE
+Shukurah    3135  0.0  0.0   6268  5608 pts/0    Ss   12:17   0:00 -bash
+Shukurah     585  0.0  0.0   6136  5548 pts/1    Ss+  07:05   0:00 -bash
+root         469  0.0  0.0   8648  5532 ?        Ss   07:05   0:00 login -- Shukurah
+message+     144  0.0  0.0   8824  5452 ?        Ss   07:05   0:00 @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+Shukurah    3369  0.0  0.0   7160  4364 pts/0    R+   12:33   0:00 ps aux --sort=-%mem
+Shukurah     529  0.0  0.0  22924  4096 ?        S    07:05   0:00 (sd-pam)
+Shukurah    3360  0.0  0.0   6268  3688 pts/0    S+   12:33   0:00 -bash
+root         143  0.0  0.0   4472  3144 ?        Ss   07:05   0:00 /usr/sbin/cron -f -P
+root         252  0.0  0.0   5492  2820 tty1     Ss+  07:05   0:00 /usr/sbin/agetty --noreset --noclear --issue-file=/etc/issue:/etc/issue.d:/run/issue.d:/usr/lib/issue.d - linux
+_chrony      337  0.0  0.0  12096  2408 ?        S    07:05   0:00 /usr/sbin/chronyd -n -F 1 -x
+root           2  0.0  0.0   3760  2336 hvc0     Sl+  07:04   0:00 /init
+root           7  0.0  0.0   3760  2104 hvc0     Sl+  07:04   0:00 plan9 --control-socket 8 --log-level 4 --server-fd 9 --pipe-fd 11 --log-truncate
+root           3  0.0  0.0   3612  2092 hvc0     S+   07:04   0:00 init-watcher
+root         142  0.0  0.0   2888  2012 ?        Ss   07:05   0:00 /bin/sh /usr/lib/systemd/scripts/chronyd-starter.sh -n -F 1
+root        3134  0.0  0.0   3832  1444 ?        S    12:17   0:00 /init
+root        3133  0.0  0.0   3764  1312 ?        Ss   12:17   0:00 /init
