@@ -655,3 +655,261 @@ The more useful skill is being able to:
 observe → investigate → understand → change → verify
 
 This troubleshooting mindset will be applied throughout the rest of my DevOps learning journey.
+
+## Linux Server Health Check
+
+### Purpose
+
+### Checks Performed
+
+### Running the Script
+
+### Example Healthy Output
+
+### Example Failed Output
+
+### Exit Codes
+
+### Troubleshooting / Incidents
+
+### WSL and systemd Compatibility
+Health Checks Performed
+
+The health-check.sh script performs a series of basic Linux server health and configuration checks. Each check is written to logs/health-check.log with a timestamp and a status such as INFO, OK, WARNING, or ERROR.
+
+1. Hostname
+
+The script identifies the hostname of the system using:
+
+hostname
+
+This confirms which Linux host is being monitored.
+
+Example:
+
+Hostname: Shukurah
+
+2. Current Timestamp
+
+Each log entry includes the current date and time.
+
+This allows health-check results to be correlated with system events and troubleshooting activity.
+
+Example format:
+
+2026-10-06 23:10:47 [INFO] Hostname: Shukurah
+
+3. System Uptime
+
+The script checks how long the Linux environment has been running.
+
+Command:
+
+uptime -p
+
+Example result:
+
+up 1 hour, 16 minutes
+
+Uptime is useful for identifying recent restarts and understanding how long the system has been operating continuously.
+
+4. Root Filesystem Disk Usage
+
+The script checks the utilisation of the root filesystem:
+
+df /
+
+The percentage is extracted and compared with an 80% threshold.
+
+During testing, the root filesystem was approximately:
+
+1%
+
+A healthy result is logged when usage remains below 80%.
+
+Example:
+
+[OK] Root disk usage is 1%
+
+If usage reaches or exceeds 80%, the script records a warning and increases the failure counter.
+
+5. Memory Usage
+
+The script calculates the percentage of system memory currently in use.
+
+The source command is:
+
+free
+
+Memory utilisation is calculated using:
+
+free | awk '/Mem:/ {printf "%.0f", $3/$2 * 100}'
+
+During testing, memory utilisation was approximately:
+
+6%
+
+Example healthy result:
+
+[OK] Memory usage is 6%
+
+If memory utilisation reaches or exceeds 80%, the script records a warning and increments the failure counter.
+
+6. Running Process Count
+
+The script counts the number of processes currently running on the Linux environment.
+
+It uses process information from:
+
+ps -e
+
+During one health-check run, the system reported:
+
+37 running processes
+
+This provides a simple indication of current system activity.
+
+7. Cron Service Status
+
+The script checks whether the cron service is running.
+
+On a systemd-based environment, the service can be inspected using:
+
+systemctl is-active cron
+
+During testing, both healthy and failed states were deliberately observed.
+
+Healthy result:
+
+[OK] Cron is running
+
+Failed result:
+
+[ERROR] Cron is not running
+
+A stopped cron service is treated as a failed health check.
+
+8. /opt/devops-lab Directory Check
+
+The script verifies that the shared DevOps lab directory exists:
+
+/opt/devops-lab
+
+The directory check uses:
+
+test -d /opt/devops-lab
+
+A successful result is logged as:
+
+[OK] /opt/devops-lab exists
+
+If the directory is missing, the script records an error and increments the failure counter.
+
+9. Configuration File Readability
+
+The script checks whether the current user can read:
+
+/opt/devops-lab/application.conf
+
+The test uses:
+
+test -r /opt/devops-lab/application.conf
+
+This checks effective read access for the user running the script.
+
+During testing, the current user was unable to read the file, producing:
+
+[ERROR] Current user cannot read application.conf
+
+This demonstrated how Linux ownership and permission rules can affect application and operational access.
+
+10. Disk Usage Warning Threshold
+
+The script treats root disk usage of 80% or more as unhealthy.
+
+The condition is conceptually:
+
+if [ "$disk_usage" -ge 80 ]; then
+
+When the threshold is reached, a warning is logged and the failure counter is increased.
+
+This helps identify storage exhaustion before it becomes a more serious operational failure.
+
+11. Memory Usage Warning Threshold
+
+Memory utilisation is also compared against an 80% threshold.
+
+If memory usage reaches or exceeds 80%, the script records a warning and increments the failure counter.
+
+This provides a simple early-warning mechanism for high memory utilisation.
+
+12. Health Summary
+
+The script maintains a failure counter:
+
+FAILURES=0
+
+Each failed health check increments the value.
+
+For example:
+
+FAILURES=$((FAILURES + 1))
+
+At the end of execution, the script evaluates the total number of failures.
+
+If one or more checks failed, the script records an error such as:
+
+[ERROR] 3 health check(s) failed
+
+and returns:
+
+exit 1
+
+If all required checks pass, the script records:
+
+[OK] All health checks passed
+
+and returns:
+
+exit 0
+
+This exit-code behaviour allows the script to be reused later by monitoring tools, automation scripts, or CI/CD pipelines.
+
+Installation/execution instructions
+chmod +x scripts/health-check.sh
+./scripts/health-check.sh
+echo $?
+
+Log Inspection
+tail -n 20 logs/health-check.log
+
+### Example Failed Output
+
+Incident 1 — Permission denied
+Cause:
+script lacked execute permission
+
+Investigation:
+ls -l scripts/system-info.sh
+
+Fix:
+chmod +x scripts/system-info.sh
+
+Incident 2 — Command not found
+Cause:
+incorrect command spelling or syntax
+
+Investigation:
+command -v COMMAND
+
+Incident 3 — Incorrect path
+Cause:
+./scripts/... was interpreted relative to the current working directory.
+
+Investigation:
+pwd
+find ~/devops-journey -name "system-info.sh"
+
+
+### WSL note
+This project was developed under WSL2
